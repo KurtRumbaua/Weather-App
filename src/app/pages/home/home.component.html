@@ -1,0 +1,9 @@
+<div *ngIf="weatherData">
+    <h2>Weather in {{ weatherData.location.name }}</h2>
+    <p>{{ weatherData.current.temp_c }}°C</p>
+    <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
+    <p>{{ weatherData.current.condition.text }}</p>
+    <p>Feels like {{ weatherData.current.feelslike_c }}°C</p>
+    <p>Humidity: {{ weatherData.current.humidity }}%</p>
+  </div>
+  
