@@ -1,12 +1,11 @@
 <div *ngIf="weatherData">
 
   <h2>{{ weatherData.location.name }}</h2>
-  <h2>{{ weatherData.location.localtime }}</h2>
-  <p>{{ weatherData.current.temp_c }}°C</p>
   <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
-  <p>{{ weatherData.current.wind_mph }} mph</p>
-  <p>Humidity: {{ weatherData.current.humidity }}%</p>
+  <p>{{ weatherData.current.temp_c }}°C</p>
+  <h2>{{ weatherData.location.localtime }}</h2>
   <p>{{ weatherData.current.condition.text }}</p>
+  <p>Humidity: {{ weatherData.current.humidity }}%</p>
 
   <h2>Hourly Forecast for Today</h2>
   <div class="forecast-hourly"> 
