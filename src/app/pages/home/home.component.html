@@ -1,31 +1,47 @@
+
 <div *ngIf="weatherData">
 
-  <h2>{{ weatherData.location.name }}</h2>
-  <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
-  <p>{{ weatherData.current.temp_c }}°C</p>
-  <h2>{{ weatherData.location.localtime }}</h2>
-  <p>{{ weatherData.current.condition.text }}</p>
-  <p>Humidity: {{ weatherData.current.humidity }}%</p>
+  <mat-grid-list cols="4" rowHeight="1:2">
 
-  <h2>Hourly Forecast for Today</h2>
-  <div class="forecast-hourly"> 
-    <div *ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
-      <h3>{{ hour.time }}</h3>
-      <img [src] = "hour.condition.icon" alt="Weather icon">
-      <p>{{ hour.temp_c }} °C</p>
-      <p>{{ hour.condition.text}}</p>
-    </div>
-  </div>
+    <mat-grid-tile>
+      <div>
+        <h2>{{ weatherData.location.name }}</h2>
+        <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
+        <p>{{ weatherData.current.temp_c }}°C</p>
+        <h2>{{ weatherData.location.localtime }}</h2>
+        <p>{{ weatherData.current.condition.text }}</p>
+        <p>Humidity: {{ weatherData.current.humidity }}%</p>
+      </div>
+    </mat-grid-tile>
 
-  <h2>7-Day Forecast</h2>
-  <div class="forecast-week">
-    <div *ngFor="let forecast of weatherData.forecast.forecastday"> 
-      <h3>{{ forecast.date }}</h3>
-      <img [src]="forecast.day.condition.icon" alt="Weather Icon">
-      <p>High: {{ forecast.day.maxtemp_c }}°C</p>
-      <p>Low: {{ forecast.day.mintemp_c }}°C</p>
-      <p>{{ forecast.day.condition.text }}</p>
-    </div>
-  </div>
+    <mat-grid-tile colspan="3"> 
+
+        <mat-button-toggle-group name="forecastType" [(ngModel)]="selectedForecast">
+          <mat-button-toggle value="hourly">Today</mat-button-toggle>
+          <mat-button-toggle value="daily">Week</mat-button-toggle>
+        </mat-button-toggle-group>
+
+          <ng-container *ngIf ="selectedForecast === 'hourly'">
+            <div *ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
+              <h3>{{ hour.time }}</h3>
+              <img [src]="hour.condition.icon" alt="Weather icon">
+              <p>{{ hour.temp_c }} °C</p>
+              <p>{{ hour.condition.text }}</p>
+            </div>
+        </ng-container>
+        
+        <ng-container *ngIf="selectedForecast === 'daily'">
+            <div *ngFor="let forecast of weatherData.forecast.forecastday"> 
+              <h3>{{ forecast.date }}</h3>
+              <img [src]="forecast.day.condition.icon" alt="Weather Icon">
+              <p>High: {{ forecast.day.maxtemp_c }}°C</p>
+              <p>Low: {{ forecast.day.mintemp_c }}°C</p>
+              <p>{{ forecast.day.condition.text }}</p>
+            </div>
+        </ng-container>
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
 
 </div>

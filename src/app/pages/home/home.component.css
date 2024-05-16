@@ -1,26 +1,34 @@
-.forecast-week {
+/* .forecast-week {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    flex-wrap: wrap; 
     }
     
-    .forecast-week > div { /* Style each hourly forecast item */
-    flex: 0 0 calc(25% - 1em); /* 25% width minus some margin/padding */
-    box-sizing: border-box;   /* Include padding/border in element's total width */
-    margin: 0.5em;            /* Add some spacing around each item */
+    .forecast-week > div { 
+    flex: 0 0 calc(25% - 1em); 
+    box-sizing: border-box;   
+    margin: 0.5em;            
     border: 1px solid #ddd;
     padding: 1%;
     }
 
 .forecast-hourly {
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    flex-wrap: wrap;
     }
     
-    .forecast-hourly > div { /* Style each hourly forecast item */
-    flex: 0 0 calc(25% - 1em); /* 25% width minus some margin/padding */
-    box-sizing: border-box;   /* Include padding/border in element's total width */
-    margin: 0.5em;            /* Add some spacing around each item */
+    .forecast-hourly > div {
+    flex: 0 0 calc(25% - 1em); 
+    box-sizing: border-box;   
+    margin: 0.5em;          
     border: 1px solid #ddd;
     padding: 1%;
     }
-      
+       */
+
+       /* In your component's CSS */
+.forecast-content {
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 300px; /* Or a specific height you prefer */
+  }
+
+  
