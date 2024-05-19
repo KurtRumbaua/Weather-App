@@ -1,21 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../../service/weather.service';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card'
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
-
-
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatGridListModule,
-    MatButtonToggleModule,
     FormsModule
   ],
   templateUrl: './home.component.html',
@@ -23,15 +15,22 @@ import { FormsModule } from '@angular/forms';
 })
 export class HomeComponent implements OnInit{
 
-  selectedForecast = 'hourly'; // Default to showing the hourly forecast
   weatherData: any;
+  showHourly = true; // show hourly forecast by default
+  showWeekly = false; // hide weekly forecast initially
+  searchLocation = 'Manila';
 
   constructor(private weatherService: WeatherService) {}
 
   //function that calls GET function from the service and then passes city name
   ngOnInit(): void {
-      this.weatherService.getWeather('Manila').subscribe(data => {
-      this.weatherData = data;
-    });
+    this.getWeatherData();
+  }
+
+  getWeatherData() {
+    this.weatherService.getWeather(this.searchLocation).subscribe(
+      data => this.weatherData = data,
+      error => console.error(error) 
+    );
   }
 }

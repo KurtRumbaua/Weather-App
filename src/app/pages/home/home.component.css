@@ -1,34 +1,7 @@
-/* .forecast-week {
-    display: flex;
-    flex-wrap: wrap; 
-    }
-    
-    .forecast-week > div { 
-    flex: 0 0 calc(25% - 1em); 
-    box-sizing: border-box;   
-    margin: 0.5em;            
-    border: 1px solid #ddd;
-    padding: 1%;
-    }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.forecast-hourly {
-    display: flex;
-    flex-wrap: wrap;
-    }
-    
-    .forecast-hourly > div {
-    flex: 0 0 calc(25% - 1em); 
-    box-sizing: border-box;   
-    margin: 0.5em;          
-    border: 1px solid #ddd;
-    padding: 1%;
-    }
-       */
 
-       /* In your component's CSS */
-.forecast-content {
-    overflow-y: auto; /* Enable vertical scrolling */
-    max-height: 300px; /* Or a specific height you prefer */
-  }
 
   

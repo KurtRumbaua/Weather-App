@@ -1,47 +1,42 @@
 
-<div *ngIf="weatherData">
+<div class="container" *ngIf="weatherData">
+  <input type="text" [(ngModel)]="searchLocation" (keyup.enter)="getWeatherData()">
 
-  <mat-grid-list cols="4" rowHeight="1:2">
+    <div>
+      <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
+      <p>{{ weatherData.current.temp_c }}°C</p>
+      <h2>{{ weatherData.location.localtime }}</h2>
+      <p>{{ weatherData.current.condition.text }}</p>
+      <p>Humidity: {{ weatherData.current.humidity }}%</p>
+    </div>
 
-    <mat-grid-tile>
-      <div>
-        <h2>{{ weatherData.location.name }}</h2>
-        <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
-        <p>{{ weatherData.current.temp_c }}°C</p>
-        <h2>{{ weatherData.location.localtime }}</h2>
-        <p>{{ weatherData.current.condition.text }}</p>
-        <p>Humidity: {{ weatherData.current.humidity }}%</p>
+    <!-- toggle button for hourly and weekly forecast -->
+    <div class="flex space-x-4 mb-4 relative">
+      <button class="px-4 py-2 text-gray-700 relative" (click)="showHourly = true; showWeekly = false;" [ngClass]="{'border-b-2 border-blue-500': showHourly}">
+        Today
+      </button>
+      <button class="px-4 py-2 text-gray-700 relative" (click)="showWeekly = true; showHourly = false;" [ngClass]="{'border-b-2 border-blue-500': showWeekly}">
+        Week      
+      </button>
+    </div>
+    
+    <div *ngIf="showHourly" class="flex flex-nowrap space-x-5">
+      <div class="shadow-md min-w-40 rounded-lg p-4"*ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
+        <h3>{{ hour.time }}</h3>
+        <img [src]="hour.condition.icon" alt="Weather icon">
+        <p>{{ hour.temp_c }} °C</p>
+        <p>{{ hour.condition.text }}</p>
       </div>
-    </mat-grid-tile>
+    </div>
 
-    <mat-grid-tile colspan="3"> 
-
-        <mat-button-toggle-group name="forecastType" [(ngModel)]="selectedForecast">
-          <mat-button-toggle value="hourly">Today</mat-button-toggle>
-          <mat-button-toggle value="daily">Week</mat-button-toggle>
-        </mat-button-toggle-group>
-
-          <ng-container *ngIf ="selectedForecast === 'hourly'">
-            <div *ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
-              <h3>{{ hour.time }}</h3>
-              <img [src]="hour.condition.icon" alt="Weather icon">
-              <p>{{ hour.temp_c }} °C</p>
-              <p>{{ hour.condition.text }}</p>
-            </div>
-        </ng-container>
-        
-        <ng-container *ngIf="selectedForecast === 'daily'">
-            <div *ngFor="let forecast of weatherData.forecast.forecastday"> 
-              <h3>{{ forecast.date }}</h3>
-              <img [src]="forecast.day.condition.icon" alt="Weather Icon">
-              <p>High: {{ forecast.day.maxtemp_c }}°C</p>
-              <p>Low: {{ forecast.day.mintemp_c }}°C</p>
-              <p>{{ forecast.day.condition.text }}</p>
-            </div>
-        </ng-container>
-
-    </mat-grid-tile>
-
-  </mat-grid-list>
-
+    <div *ngIf="showWeekly" class="flex flex-nowrap space-x-5">
+      <div class="shadow-md min-w-40 rounded-lg p-4" *ngFor="let forecast of weatherData.forecast.forecastday"> 
+        <h3>{{ forecast.date }}</h3>
+        <img [src]="forecast.day.condition.icon" alt="Weather Icon">
+        <p>High: {{ forecast.day.maxtemp_c }}°C</p>
+        <p>Low: {{ forecast.day.mintemp_c }}°C</p>
+        <p>{{ forecast.day.condition.text }}</p>
+      </div>
+    </div>
+    
 </div>
