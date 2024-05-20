@@ -16,21 +16,25 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent implements OnInit{
 
   weatherData: any;
-  showHourly = true; // show hourly forecast by default
-  showWeekly = false; // hide weekly forecast initially
-  searchLocation = 'Manila';
+  showHourly = true; 
+  showWeekly = false;
+  Location = 'Manila';
+  humidity_value: number = 0; 
+  aqi_value: number = 0;
 
   constructor(private weatherService: WeatherService) {}
 
-  //function that calls GET function from the service and then passes city name
   ngOnInit(): void {
     this.getWeatherData();
   }
 
+  //function that calls GET function from the service and then passes city name
   getWeatherData() {
-    this.weatherService.getWeather(this.searchLocation).subscribe(
+    this.weatherService.getWeather(this.Location).subscribe(
       data => this.weatherData = data,
-      error => console.error(error) 
+      error => console.error(error)
     );
+    this.humidity_value = this.weatherData?.current?.humidity; 
+    this.aqi_value = this.weatherData?.current?.air_quality["us-epa-index"]; 
   }
 }

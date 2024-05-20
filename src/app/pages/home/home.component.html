@@ -1,79 +1,115 @@
 
-<div class="container" *ngIf="weatherData">
-  <input type="text" placeholder="Search for places..." [(ngModel)]="searchLocation" (keyup.enter)="getWeatherData()">
+<div class="container grid grid-cols-1 sm:grid-cols-4" *ngIf="weatherData">
 
     <!-- left container -->
-    <div>
-      <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
-      <p>{{ weatherData.current.temp_c }}°C</p>
-      <h2>{{ weatherData.location.localtime }}</h2>
-      <p>{{ weatherData.current.condition.text }}</p>
-      <p>Humidity: {{ weatherData.current.humidity }}%</p>
+    <div class="col-span-1 p-6 space-y-6">
+      <div class="flex flex-row bg-gray-100 p-2 rounded-full space-x-2 items-center">
+        <img class="size-4"[src]="'../../../assets/search-interface-symbol.png'" alt="Search Icon">
+        <input class="bg-gray-100 focus:outline-none"type="text" placeholder="Search for places..." [(ngModel)]="Location" (keyup.enter)="getWeatherData()">
+        <img class="size-4"[src]="'../../../assets/focus.png'" alt="Location Icon">
+      </div>
+      <img class="size-56"[src]="weatherData.current.condition.icon" alt="Weather Icon">
+      <p class="font-normal text-6xl">{{ weatherData.current.temp_c }}°C</p>
+      <p class="font-normal text-xl"> {{ weatherData.location.localtime }} </p>
+      <div class="border-t border-gray-300"></div>
+      <div class="flex flex-row space-x-2 items-center">
+        <img class="size-6"[src]="'../../../assets/cloud-icon.png'" alt="Cloud Icon">
+        <p>{{ weatherData.current.condition.text }}</p>
+      </div>
+      <p>Rain - {{ weatherData.current.humidity }}%</p>
     </div>
 
-    <!-- toggle button for hourly and weekly forecast -->
-    <div class="flex space-x-4 mb-4 relative">
-      <button class="px-4 py-2 text-gray-700 relative" (click)="showHourly = true; showWeekly = false;" [ngClass]="{'border-b-2 border-blue-500': showHourly}">
-        Today
-      </button>
-      <button class="px-4 py-2 text-gray-700 relative" (click)="showWeekly = true; showHourly = false;" [ngClass]="{'border-b-2 border-blue-500': showWeekly}">
-        Week      
-      </button>
-    </div>
-    
-    <div *ngIf="showHourly" class="flex flex-nowrap space-x-5">
-      <div class="shadow-md min-w-40 rounded-lg p-4"*ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
-        <h3>{{ hour.time }}</h3>
-        <img [src]="hour.condition.icon" alt="Weather icon">
-        <p>{{ hour.temp_c }} °C</p>
-        <p>{{ hour.condition.text }}</p>
-      </div>
-    </div>
+    <!-- right container -->
+    <div class="col-span-3 p-6 space-y-6">
 
-    <div *ngIf="showWeekly" class="flex flex-nowrap space-x-5">
-      <div class="shadow-md min-w-40 rounded-lg p-4" *ngFor="let forecast of weatherData.forecast.forecastday"> 
-        <h3>{{ forecast.date }}</h3>
-        <img [src]="forecast.day.condition.icon" alt="Weather Icon">
-        <p>High: {{ forecast.day.maxtemp_c }}°C</p>
-        <p>Low: {{ forecast.day.mintemp_c }}°C</p>
-        <p>{{ forecast.day.condition.text }}</p>
-      </div>
-    </div>
-
-    <h2>Today's Highlights</h2>
-
-    <div class="grid grid-cols-3 gap-4">
-
-      <div class="shadow-md rounded-lg p-4">
-        <p>UV Index</p>
-        <p>{{ weatherData.current.uv }}</p>
-      </div>
-  
-      <div class="shadow-md rounded-lg p-4" >
-        <p>Wind Status</p>
-        <p>{{ weatherData.current.wind_kph}} km/h</p>
-        <p> {{ weatherData.current.wind_dir }} </p>
-      </div>
-  
-      <div class="shadow-md rounded-lg p-4" *ngIf="weatherData.forecast.forecastday.length > 0">
-        <p>Sunrise & Sunset</p>
-          <p>Sunrise: {{ weatherData.forecast.forecastday.slice(0, 1)[0].astro.sunrise }}</p>
-          <p>Sunset: {{ weatherData.forecast.forecastday.slice(0, 1)[0].astro.sunset }}</p>
+      <!-- toggle button for hourly and weekly forecast -->
+      <div class="flex space-x-4 mb-4 relative">
+        <button class="py-2 text-gray-700 text-xl" (click)="showHourly = true; showWeekly = false;" [ngClass]="{'border-b-2 border-blue-500 font-bold': showHourly}" [ngStyle]="{'opacity': showHourly ? 1 : 0.5}">Today</button>
+        <button class="py-2 text-gray-700 text-xl" (click)="showWeekly = true; showHourly = false;" [ngClass]="{'border-b-2 border-blue-500 font-bold': showWeekly}" [ngStyle]="{'opacity': showWeekly ? 1 : 0.5}">Week</button>
       </div>
       
-      <div class="shadow-md rounded-lg p-4" >
-        <p>Humidity</p>
-        <p>{{ weatherData.current.humidity }}%</p>
+      <!-- hourly forecast -->
+      <div *ngIf="showHourly" class="flex flex-nowrap space-x-3">
+        <div class="shadow-md min-w-40 rounded-lg p-4"*ngFor="let hour of weatherData.forecast.forecastday[0]?.hour">
+          <h3>{{ hour.time }}</h3>
+          <img [src]="hour.condition.icon" alt="Weather icon">
+          <p>{{ hour.temp_c }} °C</p>
+        </div>
       </div>
-  
-      <div class="shadow-md rounded-lg p-4" >
-        <P>Visibility</P>
-        <p>{{ weatherData.current.vis_km }} km</p>
+      
+      <!-- weekly forecast -->
+      <div *ngIf="showWeekly" class="flex flex-nowrap space-x-3">
+        <div class="shadow-md min-w-40 rounded-lg p-4" *ngFor="let forecast of weatherData.forecast.forecastday"> 
+          <h3>{{ forecast.date }}</h3>
+          <img [src]="forecast.day.condition.icon" alt="Weather Icon">
+          <div class="flex flex-row space-x-1">
+            <p>{{ forecast.day.maxtemp_c }}°C</p>
+            <p class="opacity-50">{{ forecast.day.mintemp_c }}°C</p>
+          </div>
+        </div>
       </div>
-  
-      <div class="shadow-md rounded-lg p-4" >
-        <p>Air Quality</p>
-        <p>{{ weatherData.current.air_quality.co }}</p>
+
+      <!-- additional info for today -->
+      <p class="font-bold text-xl">Today's Highlights</p>
+      <div class="grid grid-cols-3 gap-4">
+
+        <div class="shadow-md rounded-lg p-4 space-y-4">        
+          <p class="opacity-50">UV Index</p>
+          <p class="text-5xl">{{ weatherData.current.uv }}</p>
+        </div>
+    
+        <div class="shadow-md rounded-lg p-4 space-y-4" >
+          <p class="opacity-50">Wind Status</p>
+          <div class="flex flex-row space-x-1">
+            <p class="text-5xl">{{ weatherData.current.wind_kph}}</p>
+            <p class="text-2xl">km/h</p>
+          </div>
+          <p class="text-2xl"> {{ weatherData.current.wind_dir }} </p>
+        </div>
+    
+        <div class="shadow-md rounded-lg p-4 space-y-4" *ngIf="weatherData.forecast.forecastday.length > 0">
+          <p class="opacity-50">Sunrise & Sunset</p>
+            <div class="flex flex-row space-x-1">
+              <img class="size-12"[src]="'../../../assets/sunrise.png'" alt="Cloud Icon">
+              <p>{{ weatherData.forecast.forecastday.slice(0, 1)[0].astro.sunrise }}</p>
+            </div>
+            <div class="flex flex-row space-x-1">
+              <img class="size-12"[src]="'../../../assets/sunset.png'" alt="Cloud Icon">
+              <p>{{ weatherData.forecast.forecastday.slice(0, 1)[0].astro.sunset }}</p>
+            </div>
+        </div>
+        
+        <div class="shadow-md rounded-lg p-4 space-y-4" >
+          <p class="opacity-50">Humidity</p>
+          <div class="flex justify-between">
+            <p class="text-5xl">{{ weatherData.current.humidity }}%</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" [style.height.%]="humidity_value">
+                <div class="progress-circle" [style.bottom.%]="humidity_value - 5"></div>
+              </div>
+            </div>  
+          </div>
+        </div>
+    
+        <div class="shadow-md rounded-lg p-4 space-y-4" >
+          <P class="opacity-50">Visibility</P>
+          <div class="flex flex-row">
+            <p class="text-5xl">{{ weatherData.current.vis_km }}</p>
+            <p class="text-2xl">km</p>
+          </div>
+        </div>
+    
+        <div class="shadow-md rounded-lg p-4 space-y-4" >
+          <p class="opacity-50">Air Quality Index</p>
+          <div class="flex justify-between">
+            <p class="text-5xl">{{ weatherData.current.air_quality['us-epa-index'] }}</p>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" [style.height.%]="aqi_value"></div>
+              <div class="progress-circle" [style.bottom.%]="aqi_value - 5"></div>
+            </div>  
+          </div>
+        </div>
+
       </div>
 
     </div>

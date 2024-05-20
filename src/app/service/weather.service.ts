@@ -21,7 +21,7 @@ interface WeatherData {
     vis_km: number;
     uv: number; 
     air_quality:{
-      co: number;
+      "us-epa-index": number;
     }
 
   };
@@ -65,17 +65,17 @@ interface HourData {
 })
 export class WeatherService {
 
-  
-  private apiKey = '30c849f741a64b5898382548241405';
-  private apiUrl = 'http://api.weatherapi.com/v1/forecast.json';
+  private api_key = '30c849f741a64b5898382548241405';
+  private api_url = 'http://api.weatherapi.com/v1/forecast.json';
   private days = '7';
   private aqi = 'yes';
+  progressValue: number = 50; 
 
   constructor(private http: HttpClient) {}
 
   //GET function for api json data, sets "city" as a parameter
   getWeather(city: string): Observable<WeatherData> {
-    const url = `${this.apiUrl}?key=${this.apiKey}&q=${city}&days=${this.days}&aqi=${this.aqi}`;
+    const url = `${this.api_url}?key=${this.api_key}&q=${city}&days=${this.days}&aqi=${this.aqi}`;
     return this.http.get<WeatherData>(url);
   }
 }

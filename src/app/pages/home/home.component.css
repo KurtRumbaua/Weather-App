@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.progress-bar-container {
+    @apply relative w-8 h-24 border-2 border-gray-200 rounded-full overflow-hidden; 
+  }
+  
+  .progress-circle {
+    @apply absolute size-5 bg-blue-700 rounded-full left-1/2 transform -translate-x-1/2;
+  }
+  
 
   
