@@ -86,7 +86,7 @@ interface LocationData {
 export class WeatherService {
 
   private weather_api_key = '30c849f741a64b5898382548241405';
-  private weather_api_url = 'http://api.weatherapi.com/v1/forecast.json';
+  private weather_api_url = 'https://api.weatherapi.com/v1/forecast.json';
   private weather_days = '7';
   private weather_aqi = 'yes';
 
