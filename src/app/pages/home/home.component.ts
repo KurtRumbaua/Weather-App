@@ -16,11 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent implements OnInit{
 
   weatherData: any;
-  showHourly = true; 
-  showWeekly = false;
   Location = 'Manila';
-  humidity_value: number = 0; 
-  aqi_value: number = 0;
 
   constructor(private weatherService: WeatherService) {}
 
@@ -34,7 +30,5 @@ export class HomeComponent implements OnInit{
       data => this.weatherData = data,
       error => console.error(error)
     );
-    this.humidity_value = this.weatherData?.current?.humidity; 
-    this.aqi_value = this.weatherData?.current?.air_quality["us-epa-index"]; 
   }
 }
