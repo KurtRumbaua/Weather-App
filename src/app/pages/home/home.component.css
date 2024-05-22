@@ -3,4 +3,7 @@
 @tailwind utilities;
   
   
-  
+.expanding-input {
+  width: fit-content; /* Key: Allows width to adjust to content */
+  box-sizing: border-box; /* Ensures padding/border don't affect width calculation */
+}

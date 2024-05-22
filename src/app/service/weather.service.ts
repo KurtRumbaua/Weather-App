@@ -69,7 +69,6 @@ export class WeatherService {
   private api_url = 'http://api.weatherapi.com/v1/forecast.json';
   private days = '7';
   private aqi = 'yes';
-  progressValue: number = 50; 
 
   constructor(private http: HttpClient) {}
 

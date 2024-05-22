@@ -1,22 +1,55 @@
-  <div *ngIf="weatherData">
+  <div class="flex flex-col items-center space-y-10" *ngIf="weatherData">
 
-      <img [src]="weatherData.current.condition.icon" alt="Weather Icon">
-      <p>{{ weatherData.current.temp_c }}°C</p>
-      <span>{{ weatherData.location.localtime}},</span> 
-      <p>{{ weatherData.current.condition.text }}</p>
-      <p>Rain - {{ weatherData.current.humidity }}%</p>
-      
-      <!-- weekly forecast -->
-      <div>
-        <div *ngFor="let forecast of weatherData.forecast.forecastday"> 
-          <h3>{{ forecast.date | date:'EEE' }}</h3>
-          <img [src]="forecast.day.condition.icon" alt="Weather Icon">
-          <div class="flex flex-row space-x-1">
-            <p>{{ forecast.day.maxtemp_c | number:'1.0-0'}}°</p>
-            <p class="opacity-50">{{ forecast.day.mintemp_c | number:'1.0-0'}}°</p>
-          </div>
-        </div>
+  <div class="flex flex-row space-x-1">
+
+    <p class="opacity-50 font-semibold text-2xl">Right now in</p>
+    <span class="min-w-1 focus:outline-none font-bold border-b-2 px-2 text-2xl" contenteditable (keydown)="handleKeyDown($event)" [innerText]="Location"></span>
+    <p class="opacity-50 font-semibold text-2xl">, it's {{ weatherData.current.condition.text }}</p>
+
+  </div>
+
+  <!-- today's info -->
+  <div class="flex flex-row space-x-14">
+
+    <div>
+      <img class="size-36" [src]="weatherData.current.condition.icon" alt="Weather Icon">
+    </div>
+
+    <div>
+      <p class="text-7xl">{{ weatherData.current.temp_c }}</p>
+    </div>
+
+    <div class="flex flex-col">
+
+      <div class="flex flex-row">
+        <p class="text-xl font-semibold">{{ weatherData.current.wind_kph }}</p>
+        <p class="self-end">kmh</p>
       </div>
+
+      <div class="flex flex-row">
+        <p class="text-xl font-semibold">{{ weatherData.current.humidity }}</p>
+        <p class="self-end">%</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- weekly forecast -->
+  <div class="flex flex-row space-x-10">
+
+    <div class="flex flex-col items-center" *ngFor="let forecast of getSlicedForecastday()"> 
+      <img class="opacity-50" [src]="forecast.day.condition.icon" alt="Weather Icon">
+      <div class="flex flex-row space-x-1">
+        <p class="opacity-50">{{ forecast.day.maxtemp_c | number:'1.0-0'}}°</p>
+        <p class="opacity-50">/</p>
+        <p class="opacity-50">{{ forecast.day.mintemp_c | number:'1.0-0'}}°</p>
+      </div>
+      <h3 class="opacity-50">{{ forecast.date | date:'EEE' }}</h3>
+    </div>
+
+  </div>
+
 </div>
 
 
