@@ -1,10 +1,10 @@
-  <div class="flex flex-col items-center space-y-10" *ngIf="weatherData">
+<div class="flex flex-col h-screen items-center justify-center space-y-10" *ngIf="weatherData">
 
   <div class="flex flex-row space-x-1">
 
-    <p class="opacity-50 font-semibold text-2xl">Right now in</p>
-    <span class="min-w-1 focus:outline-none font-bold border-b-2 px-2 text-2xl" contenteditable (keydown)="handleKeyDown($event)" [innerText]="Location"></span>
-    <p class="opacity-50 font-semibold text-2xl">, it's {{ weatherData.current.condition.text }}</p>
+    <p class="opacity-50 font-normal text-2xl">Right now in</p>
+    <span class="min-w-4 focus:outline-none font-bold border-b-2 px-2 text-2xl" contenteditable (keydown)="handleKeyDown($event)" [innerText]="Location"></span>
+    <p class="opacity-50 font-normal text-2xl">, it's {{ weatherData.current.condition.text }}.</p>
 
   </div>
 
@@ -12,23 +12,52 @@
   <div class="flex flex-row space-x-14">
 
     <div>
-      <img class="size-36" [src]="weatherData.current.condition.icon" alt="Weather Icon">
+      <img class="size-32 animate-float" [src]="weatherData.current.condition.icon" alt="Weather Icon">
     </div>
 
-    <div>
-      <p class="text-7xl">{{ weatherData.current.temp_c }}</p>
+    <div class="flex flex-col space-y-2">
+      <p *ngIf="selectedUnit === 'C'" class="text-7xl font-light">{{ weatherData.current.temp_c }}</p>
+      <p *ngIf="selectedUnit === 'F'" class="text-7xl font-light">{{ weatherData.current.temp_f }}</p>
+      <div *ngIf="selectedUnit === 'C'" class="flex flex-row space-x-1">
+        <p class="opacity-50"> {{ weatherData.forecast.forecastday.slice(0, 1)[0].day.mintemp_c}}°</p>
+        <p class="opacity-50">/</p>
+        <p class="opacity-50"> {{ weatherData.forecast.forecastday.slice(0, 1)[0].day.maxtemp_c}}°</p>
+      </div>
+      <div *ngIf="selectedUnit === 'F'" class="flex flex-row space-x-1">
+        <p class="opacity-50"> {{ weatherData.forecast.forecastday.slice(0, 1)[0].day.mintemp_f}}°</p>
+        <p class="opacity-50">/</p>
+        <p class="opacity-50"> {{ weatherData.forecast.forecastday.slice(0, 1)[0].day.maxtemp_f}}°</p>
+      </div>
     </div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col space-y-3">
 
-      <div class="flex flex-row">
-        <p class="text-xl font-semibold">{{ weatherData.current.wind_kph }}</p>
-        <p class="self-end">kmh</p>
+      <div class="flex flex-row space-x-3 opacity-50">
+        <img class="size-5 self-center"[src]="'../../../assets/wind.png'" alt="Wind Icon">
+        <div *ngIf="selectedUnit === 'C'" class="flex flex-row space-x-1">
+          <p class="text-xl font-semibold">{{ weatherData.current.wind_kph }}</p>
+          <p class="self-end">kmh</p>
+        </div>
+        <div *ngIf="selectedUnit === 'F'" class="flex flex-row space-x-1">
+          <p class="text-xl font-semibold">{{ weatherData.current.wind_mph }}</p>
+          <p class="self-end">mph</p>
+        </div>
       </div>
 
-      <div class="flex flex-row">
-        <p class="text-xl font-semibold">{{ weatherData.current.humidity }}</p>
-        <p class="self-end">%</p>
+      <div class="flex flex-row space-x-3 opacity-50">
+        <img class="size-5 self-center"[src]="'../../../assets/umbrella.png'" alt="Umbrella Icon">
+        <div class="flex flex-row space-x-1">
+          <p class="text-xl font-semibold">{{ weatherData.forecast.forecastday.slice(0, 1)[0].day.daily_chance_of_rain }}</p>
+          <p class="self-end">%</p> 
+        </div>
+      </div>
+
+      <div class="flex flex-row space-x-3 opacity-50">
+        <img class="size-5 self-center"[src]="'../../../assets/wet.png'" alt="Wet Icon">
+        <div class="flex flex-row space-x-1">
+          <p class="text-xl font-semibold">{{ weatherData.current.humidity }}</p>
+          <p class="self-end">%</p>
+        </div>
       </div>
 
     </div>
@@ -39,17 +68,27 @@
   <div class="flex flex-row space-x-10">
 
     <div class="flex flex-col items-center" *ngFor="let forecast of getSlicedForecastday()"> 
-      <img class="opacity-50" [src]="forecast.day.condition.icon" alt="Weather Icon">
-      <div class="flex flex-row space-x-1">
+      <img class="opacity-50 size-10" [src]="forecast.day.condition.icon" alt="Weather Icon">
+      <div *ngIf="selectedUnit === 'C'" class="flex flex-row space-x-1">
         <p class="opacity-50">{{ forecast.day.maxtemp_c | number:'1.0-0'}}°</p>
         <p class="opacity-50">/</p>
         <p class="opacity-50">{{ forecast.day.mintemp_c | number:'1.0-0'}}°</p>
       </div>
+      <div *ngIf="selectedUnit === 'F'" class="flex flex-row space-x-1">
+        <p class="opacity-50">{{ forecast.day.maxtemp_f | number:'1.0-0'}}°</p>
+        <p class="opacity-50">/</p>
+        <p class="opacity-50">{{ forecast.day.mintemp_f | number:'1.0-0'}}°</p>
+      </div>
       <h3 class="opacity-50">{{ forecast.date | date:'EEE' }}</h3>
     </div>
+  
+  </div>
 
+  <div class="flex flex-row space-x-1">
+    <button class="transition ease-in-out duration-500" (click)="toggleUnit()" [class]="selectedUnit === 'C' ? 'opacity-100 font-semibold' : 'opacity-50'">°C</button>
+    <p>|</p>
+    <button class="transition ease-in-out duration-500" (click)="toggleUnit()" [class]="selectedUnit === 'F' ? 'opacity-100 font-semibold' : 'opacity-50'">°F</button>
   </div>
 
 </div>
-
 

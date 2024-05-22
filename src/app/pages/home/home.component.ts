@@ -17,11 +17,13 @@ export class HomeComponent implements OnInit{
 
   weatherData: any;
   Location = 'Manila';
+  selectedUnit: 'C' | 'F' = 'C';
 
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit(): void {
     this.getWeatherData();
+    this.getLocationData();
   }
 
   handleKeyDown(event: KeyboardEvent) {
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit{
     }
   
   }
+
   updateLocation(newLocation: string) {
     this.Location = newLocation.trim(); 
 
@@ -40,11 +43,10 @@ export class HomeComponent implements OnInit{
   }
 
   getSlicedForecastday(): any[] | null { 
-    // Make sure the array exists and is of the correct type
     if (this.weatherData && Array.isArray(this.weatherData.forecast.forecastday)) {
         return this.weatherData.forecast.forecastday.slice(0, 4);
     } else {
-        return null; // Or an empty array, depending on your preference
+        return null; 
     }
 }
 
@@ -55,4 +57,19 @@ export class HomeComponent implements OnInit{
       error => console.error(error)
     );
   }
+
+  getLocationData() {
+    this.weatherService.getLocation().subscribe(
+      locationData => {
+        this.Location = locationData.city 
+        console.log(this.Location); 
+      },
+      error => console.error('Error:', error)
+    );
+  }
+
+  toggleUnit() {
+    this.selectedUnit = this.selectedUnit === 'C' ? 'F' : 'C';
+  }
+ 
 }
