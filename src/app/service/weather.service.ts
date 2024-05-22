@@ -121,13 +121,12 @@ export class WeatherService {
         return of({} as LocationData);
       })
     );
-  }
+  } 
   
   //GET function for api json data, sets "city" as a parameter
   getWeather(city: string): Observable<WeatherData> {
     const url = `${this.weather_api_url}?key=${this.weather_api_key}&q=${city}&days=${this.weather_days}&aqi=${this.weather_aqi}`;
     return this.http.get<WeatherData>(url);
   }
-
 
 }

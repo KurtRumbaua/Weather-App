@@ -1,4 +1,4 @@
-<div class="flex flex-col h-screen items-center justify-center space-y-10" *ngIf="weatherData">
+<div class="flex flex-col h-screen items-center justify-center space-y-10 scale-75 sm:scale-100" *ngIf="weatherData">
 
   <div class="flex flex-row space-x-1">
 
@@ -89,6 +89,6 @@
     <p>|</p>
     <button class="transition ease-in-out duration-500" (click)="toggleUnit()" [class]="selectedUnit === 'F' ? 'opacity-100 font-semibold' : 'opacity-50'">°F</button>
   </div>
-
+  
 </div>
 
